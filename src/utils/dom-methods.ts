@@ -1,0 +1,1 @@
+export const createElement = (element: string) => document.createElement(element);
