@@ -5,6 +5,5 @@ import { createMonthContainer } from "./scripts/month-board";
 window.addEventListener("DOMContentLoaded", () => {
   const totalDays: number = 31;
   createMonthContainer(totalDays)
-
 });
 
