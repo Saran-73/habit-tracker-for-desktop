@@ -49,17 +49,29 @@ select {
   font: inherit;
 }
 
+.flex {
+  display: flex;
+  gap: var(--gap, 1rem)
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
 .app {
   height: 100vh;
   overflow: scroll;
 }
 
-nav {
-  text-align: center;
-  font-size: 2rem;
+header {
+  font-size: 1.8rem;
   font-weight: 500;
-  padding-block: 0.75em;
   border-bottom: 1px solid white;
+  padding: 0.75em 1em;
 }
 
 .app-container {
@@ -76,9 +88,6 @@ nav {
   flex-basis: 85%;
 }
 
-/* .month-wrapper {
-} */
-
 .month-wrapper .title-container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -86,9 +95,15 @@ nav {
   border-inline: 1px solid white;
 }
 
+.month-parent-container {
+  overflow-x: scroll;
+  max-height: 700px;
+}
+
 .month-container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  overflow-y: scroll;
 }
 
 .checkmark-block {
@@ -96,8 +111,22 @@ nav {
   aspect-ratio: 1/0.8;
 }
 
+.checkmark-block-hidden {
+  aspect-ratio: 1/0.8;
+}
+
 .isChecked {
   background-image: url("./assets/cross-mark.svg");
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.change-calender-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.6rem;
+  width: 25px;
+  aspect-ratio: 1;
 }

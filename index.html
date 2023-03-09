@@ -11,9 +11,16 @@
 
 <body>
   <div class="app">
-    <nav>
-      HABIT TRACKER
-    </nav>
+    <header class="flex justify-between items-center">
+      <h1>
+        HABIT TRACKER
+      </h1>
+      <div class="flex">
+        <button id="decrement" class="change-calender-btn">-</button>
+        <p><span class="displayed-month">Month</span> <span class="displayed-year">Year</span></p>
+        <button id="increment" class="change-calender-btn">+</button>
+      </div>
+    </header>
     <div class="app-container">
       <aside class="sidebar">
 
@@ -30,7 +37,6 @@
             <p>SAT</p>
           </div>
           <div class="month-parent-container">
-            <section class="month-container"></section>
           </div>
         </div>
       </main>
