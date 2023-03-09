@@ -7,6 +7,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const displayedYear = document.querySelector(".displayed-year");
   const incrementBtn = document.getElementById("increment");
   const decrementBtn = document.getElementById('decrement');
+  // const MONTH_CONTAINER_WRAPPER = document.querySelector(".month-parent-container");
+
 
   incrementBtn?.addEventListener('click', handleDateIncrement);
   decrementBtn?.addEventListener('click', handleDateDecrement);
@@ -17,6 +19,34 @@ window.addEventListener("DOMContentLoaded", () => {
   const date = new Date();
   month = date.getMonth() + 1;
   year = date.getFullYear();
+ 
+  // let previousMonthExists: boolean | undefined;
+  // let upcomingMonthExists: boolean | undefined;
+
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+ ];
+
+  // let options = {
+  //   root: document.querySelector(".month-parent-container"),
+  //   rootMargin: "0px 0px 2px 0px",
+  //   threshold: 1.0,
+  // };
+  
+  // let observer = new IntersectionObserver(callback, options);
+
+  // function callback(entries: any[]) {
+  //   entries.forEach((entry) => {
+  //     if (entry.isIntersecting) {
+  //       let elem = entry.target;
+  //       console.log(entry, elem)
+  //     }
+  //   });
+  // }
+  // const target = document.querySelector(`#${monthNames[month]+"-"+year.toString()}`);
+  // observer.observe(target);
+  // console.log(target)
 
   function handleDateDecrement() {
     if (month > 1) {
@@ -25,7 +55,13 @@ window.addEventListener("DOMContentLoaded", () => {
           month = 12;
           year--;
     }
-    createUI(year, month);
+
+    const MONTH_CONTAINER = document.querySelector(".month-container");
+    MONTH_CONTAINER?.remove()
+
+    createUI(year, month, getIdForMonth(month, year) );
+
+    // displayMonthAndYear(month, year);
   }
 
   function handleDateIncrement() {
@@ -35,13 +71,20 @@ window.addEventListener("DOMContentLoaded", () => {
           month = 1;
           year++;
     }
-    createUI(year, month);
+
+    const MONTH_CONTAINER = document.querySelector(".month-container");
+    MONTH_CONTAINER?.remove()
+
+    createUI(year, month, getIdForMonth(month, year), true);
   }
   
+  function getIdForMonth(month: number, year:number){
+   return `${monthNames[month - 1]+"-"+year.toString()}`
+  }
 
-  function createUI(year: number, month: number, nextMonth?:boolean) {
+  function createUI(year: number, month: number, monthId:string, nextMonth?:boolean,) {
     const totalDays: number = getDays(year, month);
-    createMonthContainer(totalDays, nextMonth);
+    createMonthContainer(totalDays, monthId, nextMonth);
     displayMonthAndYear(month, year);
   }
 
@@ -50,15 +93,11 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   const displayMonthAndYear = (month: number, year: number) => {
-    const monthNames = [
-       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
-  
     displayedMonth.textContent = monthNames[month - 1];
     displayedYear.textContent = year.toString();
-}
+  }
+  
+  createUI(year, month, getIdForMonth(month, year));
 
-  createUI(year, month);
 });
 

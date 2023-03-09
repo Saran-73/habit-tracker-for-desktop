@@ -103,7 +103,9 @@ header {
 .month-container {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  overflow-y: scroll;
+  border: 1px solid rgb(255, 255, 255);
+  /* overflow-y: scroll;
+  margin-bottom: 2em; */
 }
 
 .checkmark-block {

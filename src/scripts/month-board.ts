@@ -1,11 +1,12 @@
 import { createElement } from "../utils/dom-methods";
 
 
-export const createMonthContainer = (totalDays: number, nextMonth?: boolean) => {
+export const createMonthContainer = (totalDays: number, monthId:string, nextMonth?: boolean) => {
     const MONTH_CONTAINER_WRAPPER = document.querySelector(".month-parent-container");
 
     const MONTH_CONTAINER = createElement('section');
     MONTH_CONTAINER.setAttribute("class", "month-container");
+    MONTH_CONTAINER.setAttribute("id", monthId);
  
     let days = totalDays;
     // if the month is february just add an extra block but hide that one 
