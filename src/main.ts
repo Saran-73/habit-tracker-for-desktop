@@ -8,10 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const incrementBtn = document.getElementById("increment");
   const decrementBtn = document.getElementById('decrement');
 
-  const monthNames = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-];
+
 
   let year: number;
   let month: number;
@@ -20,38 +17,53 @@ window.addEventListener("DOMContentLoaded", () => {
   month = date.getMonth() + 1;
   year = date.getFullYear();
 
-  displayedMonth.textContent = monthNames[month - 1];
-  displayedYear.textContent = year.toString();
+  const displayMonthAndYear = (month: number, year: number) => {
+      const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+    
+      displayedMonth.textContent = monthNames[month - 1];
+      displayedYear.textContent = year.toString();
+  }
+
+    displayMonthAndYear(month, year)
   
   const getDays = (year: number, month: number) => {
     return new Date(year , month, 0).getDate()
   }
-  const totalDays: number = getDays(year, month);
 
 
   incrementBtn?.addEventListener('click', handleDateIncrement)
   decrementBtn?.addEventListener('click', handleDateDecrement)
 
+
   function handleDateDecrement() {
-    year--;
-    month--;
-
+    if (month > 1) {
+          month--;
+    } else {
+          month = 12;
+          year--;
+    }
     const totalDays: number = getDays(year, month);
-
     createMonthContainer(totalDays)
-
+    displayMonthAndYear(month, year)
   }
 
   function handleDateIncrement() {
-    year++;
-    month++;
-
+    if (month <= 11) {
+          month++;
+    } else {
+          month = 1;
+          year++;
+    }
     const totalDays: number = getDays(year, month);
-
     createMonthContainer(totalDays, true)
+    displayMonthAndYear(month, year)
   }
-
-  // create UI
+  
+  const totalDays: number = getDays(year, month);
+  // create UI 
   createMonthContainer(totalDays)
   
 
