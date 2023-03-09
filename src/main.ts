@@ -8,35 +8,15 @@ window.addEventListener("DOMContentLoaded", () => {
   const incrementBtn = document.getElementById("increment");
   const decrementBtn = document.getElementById('decrement');
 
-
+  incrementBtn?.addEventListener('click', handleDateIncrement);
+  decrementBtn?.addEventListener('click', handleDateDecrement);
 
   let year: number;
   let month: number;
-
+  // set current month and year
   const date = new Date();
   month = date.getMonth() + 1;
   year = date.getFullYear();
-
-  const displayMonthAndYear = (month: number, year: number) => {
-      const monthNames = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-      ];
-    
-      displayedMonth.textContent = monthNames[month - 1];
-      displayedYear.textContent = year.toString();
-  }
-
-    displayMonthAndYear(month, year)
-  
-  const getDays = (year: number, month: number) => {
-    return new Date(year , month, 0).getDate()
-  }
-
-
-  incrementBtn?.addEventListener('click', handleDateIncrement)
-  decrementBtn?.addEventListener('click', handleDateDecrement)
-
 
   function handleDateDecrement() {
     if (month > 1) {
@@ -45,9 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
           month = 12;
           year--;
     }
-    const totalDays: number = getDays(year, month);
-    createMonthContainer(totalDays)
-    displayMonthAndYear(month, year)
+    createUI(year, month);
   }
 
   function handleDateIncrement() {
@@ -57,44 +35,30 @@ window.addEventListener("DOMContentLoaded", () => {
           month = 1;
           year++;
     }
-    const totalDays: number = getDays(year, month);
-    createMonthContainer(totalDays, true)
-    displayMonthAndYear(month, year)
+    createUI(year, month);
   }
   
-  const totalDays: number = getDays(year, month);
-  // create UI 
-  createMonthContainer(totalDays)
+
+  function createUI(year: number, month: number, nextMonth?:boolean) {
+    const totalDays: number = getDays(year, month);
+    createMonthContainer(totalDays, nextMonth);
+    displayMonthAndYear(month, year);
+  }
+
+  const getDays = (year: number, month: number) => {
+    return new Date(year , month, 0).getDate()
+  }
+
+  const displayMonthAndYear = (month: number, year: number) => {
+    const monthNames = [
+       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
   
+    displayedMonth.textContent = monthNames[month - 1];
+    displayedYear.textContent = year.toString();
+}
 
-
-  // class Habit{
-  //   name: string;
-  //   alert;
-  //   constructor(name: string) {
-  //     this.name = name;
-  //     this.alert =()=>{
-  //       console.log("alert happened")
-  //     }
-  //   }
-  //   renameHabit(newName: string){
-  //     this.name = newName;
-  //   }
-  // }
-
-  // const a:{ name: string, alert():void}[] = [];
-
-  // const football = new Habit('football');
-  // const read = new Habit('read');
-
-
-  // football.renameHabit('soccer')
-
-
-  // a.push(football)
-  // a.push(read)
-
-
-
+  createUI(year, month);
 });
 
