@@ -4,7 +4,7 @@ import { currentHabit } from "../utils/state";
 import { createMonthContainer, handleIsChecked } from "./month-board";
 
 export const createHabitLists = () => {
-
+            // get and display all the habits name in sidebar
          fetch("/api/habits")
             .then((response) => response.json())
             .then((data) => {
@@ -26,9 +26,11 @@ export const createHabitLists = () => {
         })
         
 
-        function handleFetchingHabit(e: any, name: string) {
+      function handleFetchingHabit(e: any, name: string) {
+        let id = parseInt(e.target.getAttribute("data-id"), 10);
+          
           currentHabit.name = name;
-          let id = parseInt(e.target.getAttribute("data-id"), 10);
+          currentHabit.id =id.toString() ;
             const allHabitsNode = document.querySelectorAll(".each-habit");
 
             allHabitsNode.forEach((each) => {
@@ -37,7 +39,6 @@ export const createHabitLists = () => {
             handleIsChecked(e, "isActive")
 
 
-            // get and display all the habits name in sidebar
             fetch(`/api/habits/${id}`)
             .then((response) => response.json())
               .then(({habits}) => {

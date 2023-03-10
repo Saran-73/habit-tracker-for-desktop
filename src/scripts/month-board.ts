@@ -26,10 +26,12 @@ export const createMonthContainer = (totalDays: number, monthId:string, data?: n
         // add checkmark if its already in the data
         if (data?.includes(i+1)) {
             checkmarkDiv.classList.add("isChecked")
-       }
+        }
 
+        let id = i + 1;
 
-        checkmarkDiv.addEventListener("click", (e)=> handleIsChecked(e, "isChecked"))
+        checkmarkDiv.setAttribute("data-id",id.toString())
+        checkmarkDiv.addEventListener("click", (e)=>handleCheckMark(e, "isChecked", data, monthId ))
         MONTH_CONTAINER?.append(checkmarkDiv);
     }
 
@@ -44,6 +46,11 @@ export const createMonthContainer = (totalDays: number, monthId:string, data?: n
     }
 
 }
+const handleCheckMark = (e: any, status: 'isChecked' | 'isActive', monthArray: number[], id: string) => {
+    handleIsChecked(e, status)
+    let blockId = parseInt(e.target.getAttribute("data-id"), 10);
+    updateCurrentMonthData([...monthArray, blockId], currentHabit.id)
+}
 
 export const handleIsChecked = (element: any, checked: 'isChecked' | 'isActive') => {
     const xMarkClassName: string = checked; // class name that has a bg set to x mark using svg
@@ -55,4 +62,17 @@ export const handleIsChecked = (element: any, checked: 'isChecked' | 'isActive')
     } else {
         currentElement.classList.add(xMarkClassName)
     }
+}
+
+const updateCurrentMonthData = (monthArray: number[], id: string) => {
+    fetch(`api/habits/${id}`,{
+        method: "PATCH",
+        body: JSON.stringify({
+            month_data: monthArray
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+    }).then((response) => response.json())
+        .then((data) => console.log(data))
 }
