@@ -31,7 +31,7 @@ export const createMonthContainer = (totalDays: number, monthId:string, data?: n
         let id = i + 1;
 
         checkmarkDiv.setAttribute("data-id",id.toString())
-        checkmarkDiv.addEventListener("click", (e)=>handleCheckMark(e, "isChecked", data, monthId ))
+        checkmarkDiv.addEventListener("click", (e)=>handleCheckMark(e, data ))
         MONTH_CONTAINER?.append(checkmarkDiv);
     }
 
@@ -46,10 +46,17 @@ export const createMonthContainer = (totalDays: number, monthId:string, data?: n
     }
 
 }
-const handleCheckMark = (e: any, status: 'isChecked' | 'isActive', monthArray: number[], id: string) => {
-    handleIsChecked(e, status)
+const handleCheckMark = (e: any, monthArray: number[]) => {
     let blockId = parseInt(e.target.getAttribute("data-id"), 10);
-    updateCurrentMonthData([...monthArray, blockId], currentHabit.id)
+    const isChecked = e.target.classList.contains("isChecked");
+    let updatedMonth: number[];
+    if (isChecked) {
+        updatedMonth =  monthArray.filter((each)=> each !== blockId);
+    } else {
+        updatedMonth = [...monthArray, blockId]
+    }
+
+    updateCurrentMonthData(updatedMonth, currentHabit.id, e)
 }
 
 export const handleIsChecked = (element: any, checked: 'isChecked' | 'isActive') => {
@@ -64,7 +71,7 @@ export const handleIsChecked = (element: any, checked: 'isChecked' | 'isActive')
     }
 }
 
-const updateCurrentMonthData = (monthArray: number[], id: string) => {
+const updateCurrentMonthData = (monthArray: number[], id: string,e :any) => {
     fetch(`api/habits/${id}`,{
         method: "PATCH",
         body: JSON.stringify({
@@ -74,5 +81,7 @@ const updateCurrentMonthData = (monthArray: number[], id: string) => {
             'Content-type': 'application/json; charset=UTF-8',
           },
     }).then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+            handleIsChecked(e, "isChecked")
+        })
 }
