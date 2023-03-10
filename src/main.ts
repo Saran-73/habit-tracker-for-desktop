@@ -1,5 +1,8 @@
 // import { invoke } from "@tauri-apps/api/tauri";
 import { createMonthContainer } from "./scripts/month-board";
+import { createHabitLists } from "./scripts/habit-list";
+import  initializeMockServer  from "./mock-server/";
+import { getDays, removeMonthContainer } from "./utils";
 
 // first script that loads right after the dom is loaded
 window.addEventListener("DOMContentLoaded", () => {
@@ -8,10 +11,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const incrementBtn = document.getElementById("increment");
   const decrementBtn = document.getElementById('decrement');
   // const MONTH_CONTAINER_WRAPPER = document.querySelector(".month-parent-container");
-
+ 
+  initializeMockServer()
 
   incrementBtn?.addEventListener('click', handleDateIncrement);
   decrementBtn?.addEventListener('click', handleDateDecrement);
+
+  
 
   let year: number;
   let month: number;
@@ -48,6 +54,12 @@ window.addEventListener("DOMContentLoaded", () => {
   // observer.observe(target);
   // console.log(target)
 
+ function createUI(year: number, month: number, monthId:string, data?:any, nextMonth?:boolean,) {
+    const totalDays: number = getDays(year, month);
+    createMonthContainer(totalDays, monthId, data, nextMonth);
+    displayMonthAndYear(month, year);
+}
+
   function handleDateDecrement() {
     if (month > 1) {
           month--;
@@ -56,9 +68,7 @@ window.addEventListener("DOMContentLoaded", () => {
           year--;
     }
 
-    const MONTH_CONTAINER = document.querySelector(".month-container");
-    MONTH_CONTAINER?.remove()
-
+    removeMonthContainer()
     createUI(year, month, getIdForMonth(month, year) );
 
     // displayMonthAndYear(month, year);
@@ -72,25 +82,13 @@ window.addEventListener("DOMContentLoaded", () => {
           year++;
     }
 
-    const MONTH_CONTAINER = document.querySelector(".month-container");
-    MONTH_CONTAINER?.remove()
-
-    createUI(year, month, getIdForMonth(month, year), true);
+    removeMonthContainer()
+    createUI(year, month, getIdForMonth(month, year), [] , true);
   }
   
   function getIdForMonth(month: number, year:number){
-   return `${monthNames[month - 1]+"-"+year.toString()}`
-  }
-
-  function createUI(year: number, month: number, monthId:string, nextMonth?:boolean,) {
-    const totalDays: number = getDays(year, month);
-    createMonthContainer(totalDays, monthId, nextMonth);
-    displayMonthAndYear(month, year);
-  }
-
-  const getDays = (year: number, month: number) => {
-    return new Date(year , month, 0).getDate()
-  }
+    return `${monthNames[month - 1]+"-"+year.toString()}`
+   }
 
   const displayMonthAndYear = (month: number, year: number) => {
     displayedMonth.textContent = monthNames[month - 1];
@@ -98,6 +96,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   
   createUI(year, month, getIdForMonth(month, year));
+  createHabitLists()
 
 });
 
